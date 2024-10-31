@@ -322,10 +322,10 @@ bot.command("connected_users", async (ctx) => {
 //   }
 // });
 
-// // Логирование ошибок
-// bot.catch((err) => {
-//   console.error("Произошла ошибка:", err);
-// });
+// Логирование ошибок
+bot.catch((err) => {
+  console.error("Произошла ошибка:", err);
+});
 
 // bot.api.setMyCommands([
 //   {
