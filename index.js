@@ -343,3 +343,5 @@ bot.catch((err) => {
 //   },
 //   { command: "registration", description: "Зарегестрироваться" },
 // ]);
+
+bot.start();
