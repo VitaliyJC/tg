@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       required: true,
     },
-    paid_until: {
+    paidUntil: {
       type: Date,
       required: true,
     },
@@ -33,8 +33,8 @@ const UserSchema = new mongoose.Schema(
 
 // Добавляем виртуальное поле isActive
 UserSchema.virtual("isActive").get(function () {
-  // Проверяем, что поле paid_until установлено и сравниваем его с текущей датой
-  return this.paid_until && new Date() < this.paid_until;
+  // Проверяем, что поле paidUntil установлено и сравниваем его с текущей датой
+  return this.paidUntil && new Date() < this.paidUntil;
 });
 
 export default mongoose.model("User", UserSchema);

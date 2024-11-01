@@ -1,10 +1,16 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import CodeModel from "../models/Code.js";
+import Code from "../models/Code.js";
+
+export const isUsernameUnique = async (username) => {
+  const result = await UserModel.findOne({ username });
+  return !result;
+};
 
 export const addUser = async (username, password, accessCode) => {
   try {
-    await CodeModel.validateCode(accessCode, true);
+    await Code.validateCode(accessCode, true);
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -13,7 +19,7 @@ export const addUser = async (username, password, accessCode) => {
       username,
       passwordHash: hash,
       status: "active",
-      paid_until: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
+      paidUntil: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
       code: accessCode,
     });
 
@@ -23,6 +29,7 @@ export const addUser = async (username, password, accessCode) => {
     );
   } catch (error) {
     console.log(error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -54,7 +61,7 @@ export const updateUserAccess = async (username, date) => {
         username,
       },
       {
-        paid_until: date,
+        paidUntil: date,
         status: "active",
       }
     );

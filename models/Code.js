@@ -9,7 +9,7 @@ const CodeSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["activated", "pending"],
+      enum: ["activated", "pending", "expired"],
       required: true,
     },
     expiryDate: {
@@ -35,15 +35,16 @@ CodeSchema.statics.validateCode = async function (
     return false;
   }
 
-  // Проверяем, активен ли код
-  if (code.status !== "pending") {
-    if (throwError) throw new Error("Код уже активирован.");
+  // Проверяем, не истек ли срок действия кода и обновляем статус, если срок истек
+  if (new Date() > code.expiryDate) {
+    await this.updateOne({ code: codeString }, { $set: { status: "expired" } });
+    if (throwError) throw new Error("Срок действия кода истек.");
     return false;
   }
 
-  // Проверяем, не истек ли срок действия кода
-  if (new Date() > code.expiryDate) {
-    if (throwError) throw new Error("Срок действия кода истек.");
+  // Проверяем, активен ли код
+  if (code.status !== "pending" || code.status === "expired") {
+    if (throwError) throw new Error("Код уже активирован или истек.");
     return false;
   }
 
