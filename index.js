@@ -288,7 +288,7 @@ bot.on("message:text", async (ctx) => {
     const username = ctx.message.text.trim();
 
     // Проверяем уникальность логина
-    const isUnique = await isUsernameUnique(username);
+    const isUnique = await UserController.isUsernameUnique(username);
     if (isUnique) {
       ctx.session.username = username;
       ctx.session.step = "awaitingPassword"; // Переход к этапу ввода пароля

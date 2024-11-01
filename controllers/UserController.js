@@ -29,7 +29,6 @@ export const addUser = async (username, password, accessCode) => {
     );
   } catch (error) {
     console.log(error);
-    return { success: false, message: error.message };
   }
 };
 
