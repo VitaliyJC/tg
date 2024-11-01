@@ -42,6 +42,7 @@ const ADMIN_IDS = [405034143, 123456789];
 
 // Middleware для проверки админ-доступа
 const adminMiddleware = async (ctx, next) => {
+  console.log(`Проверка доступа для пользователя ${ctx.from.id}`);
   if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
     await next();
   } else {
@@ -49,9 +50,9 @@ const adminMiddleware = async (ctx, next) => {
   }
 };
 
-// Применяем `adminMiddleware` только к административным командам
+bot.command("start", (ctx) => ctx.reply("Бот активен и получает команды"));
 bot.command("connected_users", adminMiddleware, (ctx) =>
-  connectedUsers(bot, ctx)
+  ctx.reply("Команда `connected_users` активна и работает")
 );
 bot.command("add_code", adminMiddleware, (ctx) => addCode(bot, ctx));
 bot.command("list_code", adminMiddleware, (ctx) => listCode(bot, ctx));
