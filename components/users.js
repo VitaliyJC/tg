@@ -1,7 +1,8 @@
 import { exec } from "child_process";
 import { UserController, CodeController } from "../controllers/index.js";
+import { bot } from "../index.js";
 
-export const registration = (bot) => {
+export const registration = (ctx) => {
   bot.command("registration", (ctx) => {
     ctx.session.step = "awaitingCode";
     ctx.reply("Привет! Введите код доступа для регистрации.");
