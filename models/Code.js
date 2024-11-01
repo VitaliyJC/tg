@@ -28,6 +28,7 @@ CodeSchema.statics.validateCode = async function ({
 }) {
   // Находим код по значению
   const code = await this.findOne({ code: codeString });
+  console.log("Найденный код:", code);
 
   // Проверяем, существует ли код
   if (!code) {
@@ -35,21 +36,24 @@ CodeSchema.statics.validateCode = async function ({
     return null; // Возвращаем null, если код не найден
   }
 
-  // Проверяем, не истек ли срок действия кода и обновляем статус только если статус - "pending"
+  // Проверяем, не истек ли срок действия кода и обновляем статус, если срок истек
   if (new Date() > code.expiryDate && code.status === "pending") {
     // Обновляем статус на "expired"
     await this.updateOne({ code: codeString }, { $set: { status: "expired" } });
     if (throwError) throw new Error("Срок действия кода истек.");
+    console.log("Срок действия истек и код установлен в 'expired'");
     return null; // Возвращаем null, если срок истек
   }
 
-  // Проверяем, активен ли код (если статус не "pending" или "expired")
-  if (code.status !== "pending" || code.status !== "activated") {
+  // Проверяем, активен ли код (если статус не "pending" и не "activated")
+  if (code.status !== "pending" && code.status !== "activated") {
     if (throwError) throw new Error("Код уже активирован или истек.");
+    console.log("Код неактивен.");
     return null; // Возвращаем null, если код неактивен
   }
 
   // Если все проверки пройдены, возвращаем объект кода
+  console.log("Код прошел все проверки:", code);
   return code;
 };
 
