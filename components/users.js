@@ -78,7 +78,8 @@ export const registration = (bot) => {
 // Просмотр id
 export const showId = (bot) => {
   bot.command("id", async (ctx) => {
-    await ctx.reply(`Ваш telegram ID: ${ctx.from.id}`);
-    console.log(ctx.from);
+    const chatId = ctx.chat.id;
+    await ctx.reply(`Ваш telegram ID: ${ctx.from.id}, наш чат id: ${chatId}`);
+    console.log(ctx.chat);
   });
 };

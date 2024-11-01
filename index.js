@@ -50,8 +50,7 @@ bot.use(
 );
 
 // ID администратора
-// const ADMIN_IDS = [405034143];
-const ADMIN_IDS = [405034149];
+const ADMIN_IDS = [405034143];
 
 // Middleware для проверки админ-доступа
 const adminMiddleware = async (ctx, next) => {
