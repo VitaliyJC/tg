@@ -2,6 +2,23 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
+    tgId: {
+      type: String,
+      required: true,
+      immutable: true,
+    },
+    firstName: {
+      type: String,
+    },
+    usernameTg: {
+      type: String,
+      required: true,
+      immutable: true,
+    },
+    isPremium: {
+      type: Boolean,
+      required: true,
+    },
     username: {
       type: String,
       required: true,

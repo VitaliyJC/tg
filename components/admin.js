@@ -271,6 +271,7 @@ export const listUser = (bot) => {
   });
 };
 
+// Просмотр id
 export const showId = (bot) => {
   bot.command("id", async (ctx) => {
     await ctx.reply(`Ваш telegram ID: ${ctx.from.id}`);

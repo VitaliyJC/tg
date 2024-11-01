@@ -13,22 +13,24 @@ export const isUsernameUnique = async (username) => {
   }
 };
 
-export const addUser = async (username, password, accessCode) => {
+export const addUser = async (
+  tgId,
+  firstName,
+  usernameTg,
+  isPremium,
+  username,
+  password,
+  accessCode
+) => {
   try {
-    // const codeDocument = await CodeModel.validateCode({
-    //   codeString: accessCode,
-    //   throwError: true,
-    // });
-
-    // if (!codeDocument) {
-    //   console.log("Код доступа недействителен.");
-    //   return;
-    // }
-
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
     await UserModel.create({
+      tgId,
+      firstName,
+      usernameTg,
+      isPremium,
       username,
       passwordHash: hash,
       status: "active",
