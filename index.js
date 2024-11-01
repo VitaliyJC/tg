@@ -59,6 +59,7 @@ bot.command("delete_all_codes", adminMiddleware, (ctx) => deleteAllCode(ctx));
 bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(ctx));
 bot.command("list_users", adminMiddleware, (ctx) => listUser(ctx));
 
+showId(bot);
 registration(bot);
 
 commandList(bot);
