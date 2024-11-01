@@ -58,7 +58,7 @@ const adminMiddleware = async (ctx, next) => {
   if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
     await next();
   } else {
-    await ctx.reply("⛔ У вас нет доступа к этой команде.");
+    return;
   }
 };
 
