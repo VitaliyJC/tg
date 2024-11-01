@@ -1,5 +1,5 @@
 import { exec } from "child_process";
-import { UserController, CodeController } from "../controllers";
+import { UserController, CodeController } from "../controllers/index.js";
 
 // Команда для проверки подключенных клиентов
 export const connectedUsers = (bot) => {
