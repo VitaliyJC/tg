@@ -46,3 +46,12 @@ export const deleteAllCodes = async () => {
     console.log(error);
   }
 };
+
+export const validateCode = async (code) => {
+  try {
+    const result = await CodeModel.findOne({ code });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};

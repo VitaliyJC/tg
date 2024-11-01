@@ -21,8 +21,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     code: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Code",
+      type: String,
       required: true,
     },
   },
