@@ -270,7 +270,7 @@ bot.on("message:text", async (ctx) => {
     const codeDocument = await CodeController.validateCode(code, true);
 
     if (codeDocument) {
-      ctx.session.code = codeDocument.code;
+      ctx.session.code = code;
       ctx.session.step = "awaitingUsername";
       ctx.reply("Код доступа подтвержден. Введите желаемый логин.");
     } else {
