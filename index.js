@@ -292,6 +292,7 @@ bot.on("message:text", async (ctx) => {
     const password = ctx.message.text.trim();
     const username = ctx.session.username;
     const code = ctx.session.code;
+    console.log(username);
 
     // Автоматизируем создание пользователя через ocpasswd с помощью expect
     const command = `./create_user.sh ${username} ${password}`;

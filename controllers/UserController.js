@@ -29,7 +29,7 @@ export const addUser = async (username, password, accessCode) => {
     const hash = await bcrypt.hash(password, salt);
 
     await UserModel.create({
-      username: username,
+      username,
       passwordHash: hash,
       status: "active",
       paidUntil: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
