@@ -46,8 +46,7 @@ const restrictedCommand = (commandHandler) => {
     if (isAuthorized(ctx)) {
       return commandHandler(ctx);
     }
-    // Можно добавить ответ для неавторизованных пользователей, если необходимо
-    // ctx.reply("⛔ У вас нет доступа к этой команде.");
+    return;
   };
 };
 
