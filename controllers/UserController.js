@@ -19,14 +19,14 @@ export const addUser = async (username, password, accessCode) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    // const accessCodeObjectId = mongoose.Types.ObjectId(accessCode);
+    const accessCodeObjectId = mongoose.Types.ObjectId(accessCode);
 
     await UserModel.create({
       username,
       passwordHash: hash,
       status: "active",
       paidUntil: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
-      code: accessCode,
+      code: accessCodeObjectId,
     });
 
     await CodeModel.findOneAndUpdate(
