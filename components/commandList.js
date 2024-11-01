@@ -28,6 +28,6 @@ export const commandList = (bot, adminId) => {
 
   // Устанавливаем команды только для администратора
   bot.api.setMyCommands(adminCommands, {
-    scope: { type: "chat_member", chat_id: adminId },
+    scope: { type: "chat_member", chat_id: adminId, user_id: adminId },
   });
 };
