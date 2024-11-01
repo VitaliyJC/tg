@@ -1,16 +1,20 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import CodeModel from "../models/Code.js";
-import Code from "../models/Code.js";
 
 export const isUsernameUnique = async (username) => {
-  const result = await UserModel.findOne({ username });
-  return !result;
+  try {
+    const result = await UserModel.findOne({ username });
+    return !result;
+  } catch (error) {
+    console.error("Ошибка при проверке уникальности пользователя:", error);
+    throw error;
+  }
 };
 
 export const addUser = async (username, password, accessCode) => {
   try {
-    await Code.validateCode(accessCode, true);
+    await CodeModel.validateCode(accessCode, true);
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
