@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@grammyjs/ratelimiter':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@grammyjs/storage-free':
         specifier: ^2.4.2
         version: 2.4.2
@@ -26,6 +29,9 @@ importers:
         version: 3.1.7
 
 packages:
+
+  '@grammyjs/ratelimiter@1.2.0':
+    resolution: {integrity: sha512-xBkH/ATJsuv5JgVYX9yQM9DNg75Qqjw+gh82lVsBn4j+d0DkxxC+kuy6WFoB96Cb6oifQfaBJL8CTikdYG4v0A==}
 
   '@grammyjs/storage-free@2.4.2':
     resolution: {integrity: sha512-apyZiHXxVOZQSITt5N279WFAus8kXkYFjASmsDHeHtD9M3sGfj2RYTNmYzPCMzhymD2NGuElunhh8w4geGfwaA==}
@@ -443,6 +449,8 @@ packages:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
 snapshots:
+
+  '@grammyjs/ratelimiter@1.2.0': {}
 
   '@grammyjs/storage-free@2.4.2':
     dependencies:

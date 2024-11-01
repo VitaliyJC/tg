@@ -1,5 +1,6 @@
 import { Bot, session, GrammyError, HttpError, Keyboard } from "grammy";
 import { freeStorage } from "@grammyjs/storage-free";
+import { limit } from "@grammyjs/ratelimiter";
 import mongoose from "mongoose";
 
 import { config } from "./config.js";
@@ -27,6 +28,18 @@ mongoose
 
 // Инициализация бота
 const bot = new Bot(config.telegram_api);
+
+bot.use(
+  limit({
+    timeFrame: 10000, // Время в миллисекундах (например, 10 секунд)
+    limit: 3, // Количество запросов, разрешенных в указанный период
+    onLimitExceeded: async (ctx) => {
+      await ctx.reply(
+        "⛔ Вы слишком часто отправляете запросы. Пожалуйста, подождите."
+      );
+    },
+  })
+);
 
 // Подключаем сессии с использованием freeStorage и передаем токен
 bot.use(
