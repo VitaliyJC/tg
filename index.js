@@ -270,11 +270,11 @@ bot.on("message:text", async (ctx) => {
     const code = ctx.message.text.trim();
 
     // Проверяем код доступа в базе данных
-    const user = await validateCode(code, true);
-    console.log(user);
+    const codeDocument = await validateCode(code, true);
+    console.log(codeDocument);
 
-    if (user) {
-      const expiryDate = new Date(user.expiryDate);
+    if (codeDocument) {
+      const expiryDate = new Date(codeDocument.expiryDate);
       if (expiryDate > new Date()) {
         ctx.session.code = code; // Сохраняем код в данных текущего сеанса
         ctx.session.step = "awaitingUsername"; // Переход к следующему этапу
