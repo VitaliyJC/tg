@@ -74,17 +74,15 @@ bot.command("start", (ctx) =>
 );
 
 // Обрабатываем нажатие на кнопку "Старт"
-bot.hears("Старт", (ctx) => {
+bot.hears("Список команд", (ctx) => {
   ctx.reply(
     "Доступные команды:\n/registration - зарегистрироваться\n/id - показать Ваш ID"
   );
 });
 
 // Обрабатываем нажатие на кнопку "Список команд"
-bot.hears("Список команд", (ctx) => {
-  ctx.reply(
-    "Доступные команды:\n/registration\n/id\nДля удобства можете нажать кнопку `Меню`."
-  );
+bot.hears("Зарегистрироваться", (ctx) => {
+  ctx.reply("/registration");
 });
 
 bot.command("connected_users", adminMiddleware, (ctx) => connectedUsers(ctx));
