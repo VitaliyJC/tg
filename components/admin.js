@@ -1,17 +1,6 @@
 import { exec } from "child_process";
 import { UserController, CodeController } from "../controllers/index.js";
 
-const ADMIN_IDS = [405034143, 123456789];
-
-const adminMiddleware = async (ctx, next) => {
-  if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
-    await next(); // Пользователь авторизован, продолжаем обработку
-  } else {
-    await ctx.reply("⛔ У вас нет доступа к этой команде.");
-    // Прекращаем дальнейшую обработку
-  }
-};
-
 // Команда для проверки подключенных клиентов
 export const connectedUsers = (bot) => {
   bot.use(adminMiddleware, (ctx) => {
@@ -136,46 +125,44 @@ export const addCode = (bot) => {
 };
 
 // Команда для просмотра всех кодов доступа
-export const listCode = (bot) => {
-  bot.command("list_codes", async (ctx) => {
-    try {
-      const codes = await CodeController.getAllCodes();
+export const listCode = async (ctx) => {
+  try {
+    const codes = await CodeController.getAllCodes();
 
-      if (codes.length === 0) {
-        return ctx.reply("⚠ Нет доступных кодов.");
-      }
-
-      const checkStatus = (status) => {
-        switch (status) {
-          case "activated":
-            return "Активирован 🔴";
-
-          case "pending":
-            return "Активен 🟢";
-
-          case "expired":
-            return "Истек 🔴";
-
-          default:
-            return "Неизвестен ❌";
-        }
-      };
-
-      const codeList = codes
-        .map((code) => {
-          const status = checkStatus(code.status);
-          return `Код: ${code.code}, действителен до: ${new Date(
-            code.expiryDate
-          ).toLocaleDateString("ru-RU")}, статус: ${status}`;
-        })
-        .join("\n");
-
-      ctx.reply(`Список кодов доступа:\n${codeList}`);
-    } catch (error) {
-      console.error("❌ Ошибка при получении кодов доступа:", error);
-      ctx.reply("❌ Ошибка при получении списка кодов доступа.");
+    if (codes.length === 0) {
+      return ctx.reply("⚠ Нет доступных кодов.");
     }
-  });
+
+    const checkStatus = (status) => {
+      switch (status) {
+        case "activated":
+          return "Активирован 🔴";
+
+        case "pending":
+          return "Активен 🟢";
+
+        case "expired":
+          return "Истек 🔴";
+
+        default:
+          return "Неизвестен ❌";
+      }
+    };
+
+    const codeList = codes
+      .map((code) => {
+        const status = checkStatus(code.status);
+        return `Код: ${code.code}, действителен до: ${new Date(
+          code.expiryDate
+        ).toLocaleDateString("ru-RU")}, статус: ${status}`;
+      })
+      .join("\n");
+
+    ctx.reply(`Список кодов доступа:\n${codeList}`);
+  } catch (error) {
+    console.error("❌ Ошибка при получении кодов доступа:", error);
+    ctx.reply("❌ Ошибка при получении списка кодов доступа.");
+  }
 };
 
 // Команда для удаления определенного кода

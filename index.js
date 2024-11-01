@@ -51,18 +51,15 @@ const adminMiddleware = async (ctx, next) => {
 };
 
 bot.command("start", (ctx) => ctx.reply("Бот активен и получает команды"));
-bot.command("connected_users", adminMiddleware, (ctx) =>
-  ctx.reply("Команда `connected_users` активна и работает")
-);
-// bot.command("add_code", adminMiddleware, (ctx) => addCode(bot, ctx));
-// bot.command("list_code", adminMiddleware, (ctx) => listCode(bot, ctx));
-// bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(bot, ctx));
-// bot.command("delete_all_codes", adminMiddleware, (ctx) =>
-//   deleteAllCode(bot, ctx)
-// );
-// bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(bot, ctx));
-// bot.command("list_user", adminMiddleware, (ctx) => listUser(bot, ctx));
-// bot.command("show_id", adminMiddleware, (ctx) => showId(bot, ctx));
+
+bot.command("connected_users", adminMiddleware, (ctx) => connectedUsers(ctx));
+bot.command("add_code", adminMiddleware, (ctx) => addCode(ctx));
+bot.command("list_codes", adminMiddleware, (ctx) => listCode(ctx));
+bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(ctx));
+bot.command("delete_all_codes", adminMiddleware, (ctx) => deleteAllCode(ctx));
+bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(ctx));
+bot.command("list_users", adminMiddleware, (ctx) => listUser(ctx));
+bot.command("show_id", adminMiddleware, (ctx) => showId(ctx));
 // registration(bot);
 
 commandList(bot);
