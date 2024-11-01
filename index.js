@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import { config } from "./config.js";
 import { UserController, CodeController } from "./controllers/index.js";
-import validateCode from "./models/Code.js";
+import Code from "./models/Code.js";
 
 mongoose
   .connect(config.db_api, { authSource: "admin" })
@@ -270,7 +270,7 @@ bot.on("message:text", async (ctx) => {
     const code = ctx.message.text.trim();
 
     // Проверяем код доступа в базе данных
-    const codeDocument = await validateCode({
+    const codeDocument = await Code.validateCode({
       codeString: code,
       throwError: true,
     });
