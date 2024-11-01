@@ -1,9 +1,4 @@
-export const commandList = (
-  bot,
-  ADMIN_IDS,
-  BotCommandScopeChatMember,
-  BotCommandScopeDefault
-) => {
+export const commandList = (bot, adminId) => {
   // Команды, доступные всем пользователям
   const userCommands = [
     { command: "registration", description: "Зарегистрироваться" },
@@ -29,10 +24,10 @@ export const commandList = (
   ];
 
   // Устанавливаем команды для всех пользователей
-  bot.api.setMyCommands(userCommands, { scope: new BotCommandScopeDefault() });
+  bot.api.setMyCommands(userCommands, { scope: { type: "default" } });
 
   // Устанавливаем команды только для администратора
   bot.api.setMyCommands(adminCommands, {
-    scope: new BotCommandScopeChatMember(ADMIN_ID),
+    scope: { type: "chat_member", chat_id: adminId },
   });
 };

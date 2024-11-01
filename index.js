@@ -1,11 +1,4 @@
-import {
-  Bot,
-  session,
-  GrammyError,
-  HttpError,
-  BotCommandScopeChatMember,
-  BotCommandScopeDefault,
-} from "grammy";
+import { Bot, session, GrammyError, HttpError } from "grammy";
 import { freeStorage } from "@grammyjs/storage-free";
 import mongoose from "mongoose";
 
@@ -69,7 +62,7 @@ bot.command("list_users", adminMiddleware, (ctx) => listUser(ctx));
 showId(bot);
 registration(bot);
 
-commandList(bot, ADMIN_IDS, BotCommandScopeChatMember, BotCommandScopeDefault);
+commandList(bot, ADMIN_IDS[0]);
 
 showErrors(bot, GrammyError, HttpError);
 
