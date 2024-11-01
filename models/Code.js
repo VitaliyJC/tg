@@ -39,7 +39,7 @@ CodeSchema.statics.validateCode = async function ({
   if (new Date() > code.expiryDate && code.status === "pending") {
     // Обновляем статус на "expired"
     await this.updateOne({ code: codeString }, { $set: { status: "expired" } });
-    if (throwError) throw new Error("Срок действия кода истек.");
+    if (throwError) throw new Error("Срок действия кода истек!");
     return null; // Возвращаем null, если срок истек
   }
 
