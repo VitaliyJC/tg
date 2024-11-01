@@ -54,7 +54,6 @@ const ADMIN_IDS = [405034143];
 
 // Middleware для проверки админ-доступа
 const adminMiddleware = async (ctx, next) => {
-  console.log(`Проверка доступа для пользователя ${ctx.from.id}`);
   if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
     await next();
   } else {
@@ -82,7 +81,7 @@ bot.hears("Старт", (ctx) => {
 // Обрабатываем нажатие на кнопку "Список команд"
 bot.hears("Список команд", (ctx) => {
   ctx.reply(
-    "Доступные команды:\n/connected_users\n/add_code\n/list_codes\n..."
+    "Доступные команды:\n/registration\n/id\nДля удобства можете нажать кнопку `Меню`."
   );
 });
 
