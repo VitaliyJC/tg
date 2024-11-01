@@ -15,15 +15,15 @@ export const isUsernameUnique = async (username) => {
 
 export const addUser = async (username, password, accessCode) => {
   try {
-    const codeDocument = await CodeModel.validateCode({
-      codeString: accessCode,
-      throwError: true,
-    });
+    // const codeDocument = await CodeModel.validateCode({
+    //   codeString: accessCode,
+    //   throwError: true,
+    // });
 
-    if (!codeDocument) {
-      console.log("Код доступа недействителен.");
-      return;
-    }
+    // if (!codeDocument) {
+    //   console.log("Код доступа недействителен.");
+    //   return;
+    // }
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
