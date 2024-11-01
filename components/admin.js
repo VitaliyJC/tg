@@ -1,83 +1,102 @@
 import { exec } from "child_process";
 import { UserController, CodeController } from "../controllers/index.js";
 
+const ADMIN_IDS = [405034143, 123456789];
+
+const adminMiddleware = async (ctx, next) => {
+  if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
+    await next(); // Пользователь авторизован, продолжаем обработку
+  } else {
+    await ctx.reply("⛔ У вас нет доступа к этой команде.");
+    // Прекращаем дальнейшую обработку
+  }
+};
+
 // Команда для проверки подключенных клиентов
 export const connectedUsers = (bot) => {
-  bot.command("connected_users", async (ctx) => {
-    const args = ctx.message.text.split(" ").slice(1);
-    const username = args[0];
+  bot.use(adminMiddleware, (ctx) => {
+    bot.command("connected_users", async (ctx) => {
+      const args = ctx.message.text.split(" ").slice(1);
+      const username = args[0];
 
-    if (username) {
-      // Если указан username, выполняем команду для конкретного пользователя в формате JSON
-      exec(`occtl --json show user ${username}`, (error, stdout, stderr) => {
-        if (error || stderr) {
-          console.error(`❌ Ошибка при выполнении команды: ${error || stderr}`);
-          ctx.reply(
-            `❌ Не удалось получить статус для пользователя ${username}.`
-          );
-          return;
-        }
+      if (username) {
+        // Если указан username, выполняем команду для конкретного пользователя в формате JSON
+        exec(`occtl --json show user ${username}`, (error, stdout, stderr) => {
+          if (error || stderr) {
+            console.error(
+              `❌ Ошибка при выполнении команды: ${error || stderr}`
+            );
+            ctx.reply(
+              `❌ Не удалось получить статус для пользователя ${username}.`
+            );
+            return;
+          }
 
-        // Парсим JSON-ответ и проверяем, что он содержит данные
-        const userInfo = JSON.parse(stdout);
-        if (!userInfo || userInfo.length === 0) {
-          ctx.reply(`❌ Пользователь ${username} не найден или не подключен.`);
-          return;
-        }
+          // Парсим JSON-ответ и проверяем, что он содержит данные
+          const userInfo = JSON.parse(stdout);
+          if (!userInfo || userInfo.length === 0) {
+            ctx.reply(
+              `❌ Пользователь ${username} не найден или не подключен.`
+            );
+            return;
+          }
 
-        // Извлекаем информацию о пользователе из первого элемента массива
-        const user = userInfo[0];
-        const {
-          ID,
-          Username,
-          "Remote IP": remoteIP,
-          IPv4,
-          "User-Agent": userAgent,
-          RX,
-          TX,
-          "Connected at": connectedAt,
-          State,
-          "_Connected at": connectedDuration,
-        } = user;
-        const message = `Статус пользователя ${Username}:\n\nСостояние: ${State}\nID: ${ID}\nIP: ${remoteIP}\nVPN IP: ${IPv4}\nUser-Agent: ${userAgent}\nПолучено: ${RX} байт\nОтправлено: ${TX} байт\nПодключен с: ${connectedAt}\nПодключен на протяжении: ${connectedDuration}`;
-        ctx.reply(message);
-      });
-    } else {
-      // Если username не указан, выводим всех подключенных клиентов в формате JSON
-      exec("occtl --json show users", (error, stdout, stderr) => {
-        if (error || stderr) {
-          console.error(`❌ Ошибка при выполнении команды: ${error || stderr}`);
-          ctx.reply("❌ Не удалось получить список подключенных клиентов.");
-          return;
-        }
+          // Извлекаем информацию о пользователе из первого элемента массива
+          const user = userInfo[0];
+          const {
+            ID,
+            Username,
+            "Remote IP": remoteIP,
+            IPv4,
+            "User-Agent": userAgent,
+            RX,
+            TX,
+            "Connected at": connectedAt,
+            State,
+            "_Connected at": connectedDuration,
+          } = user;
+          const message = `Статус пользователя ${Username}:\n\nСостояние: ${State}\nID: ${ID}\nIP: ${remoteIP}\nVPN IP: ${IPv4}\nUser-Agent: ${userAgent}\nПолучено: ${RX} байт\nОтправлено: ${TX} байт\nПодключен с: ${connectedAt}\nПодключен на протяжении: ${connectedDuration}`;
+          ctx.reply(message);
+        });
+      } else {
+        // Если username не указан, выводим всех подключенных клиентов в формате JSON
+        exec("occtl --json show users", (error, stdout, stderr) => {
+          if (error || stderr) {
+            console.error(
+              `❌ Ошибка при выполнении команды: ${error || stderr}`
+            );
+            ctx.reply("❌ Не удалось получить список подключенных клиентов.");
+            return;
+          }
 
-        // Парсим JSON-ответ и обрабатываем данные
-        const users = JSON.parse(stdout);
-        if (users.length === 0) {
-          ctx.reply("🚷 Нет подключенных клиентов.");
-          return;
-        }
+          // Парсим JSON-ответ и обрабатываем данные
+          const users = JSON.parse(stdout);
+          if (users.length === 0) {
+            ctx.reply("🚷 Нет подключенных клиентов.");
+            return;
+          }
 
-        const userInfo = users
-          .map((user) => {
-            const {
-              ID,
-              Username,
-              "Remote IP": remoteIP,
-              IPv4,
-              "User-Agent": userAgent,
-              RX,
-              TX,
-              "Connected at": connectedAt,
-              State,
-            } = user;
-            return `ID: ${ID}\nПользователь: ${Username}\nIP: ${remoteIP}\nVPN IP: ${IPv4}\nUser-Agent: ${userAgent}\nПолучено: ${RX} байт\nОтправлено: ${TX} байт\nПодключен с: ${connectedAt}\nСостояние: ${State}\n\n`;
-          })
-          .join("\n");
+          const userInfo = users
+            .map((user) => {
+              const {
+                ID,
+                Username,
+                "Remote IP": remoteIP,
+                IPv4,
+                "User-Agent": userAgent,
+                RX,
+                TX,
+                "Connected at": connectedAt,
+                State,
+              } = user;
+              return `ID: ${ID}\nПользователь: ${Username}\nIP: ${remoteIP}\nVPN IP: ${IPv4}\nUser-Agent: ${userAgent}\nПолучено: ${RX} байт\nОтправлено: ${TX} байт\nПодключен с: ${connectedAt}\nСостояние: ${State}\n\n`;
+            })
+            .join("\n");
 
-        ctx.reply(`Подключенные клиенты:\n\n${userInfo}`);
-      });
-    }
+          ctx.reply(`Подключенные клиенты:\n\n${userInfo}`);
+        });
+      }
+    });
   });
 };
 
