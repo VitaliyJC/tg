@@ -37,14 +37,31 @@ bot.use(
   })
 );
 
-connectedUsers(bot);
-addCode(bot);
-listCode(bot);
-deleteCode(bot);
-deleteAllCode(bot);
-deleteUser(bot);
-listUser(bot);
-showId(bot);
+// ID администратора
+const ADMIN_IDS = [405034143, 123456789];
+
+// Middleware для проверки админ-доступа
+const adminMiddleware = async (ctx, next) => {
+  if (ctx.from && ADMIN_IDS.includes(ctx.from.id)) {
+    await next();
+  } else {
+    await ctx.reply("⛔ У вас нет доступа к этой команде.");
+  }
+};
+
+// Применяем `adminMiddleware` только к административным командам
+bot.command("connected_users", adminMiddleware, (ctx) =>
+  connectedUsers(bot, ctx)
+);
+bot.command("add_code", adminMiddleware, (ctx) => addCode(bot, ctx));
+bot.command("list_code", adminMiddleware, (ctx) => listCode(bot, ctx));
+bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(bot, ctx));
+bot.command("delete_all_codes", adminMiddleware, (ctx) =>
+  deleteAllCode(bot, ctx)
+);
+bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(bot, ctx));
+bot.command("list_user", adminMiddleware, (ctx) => listUser(bot, ctx));
+bot.command("show_id", adminMiddleware, (ctx) => showId(bot, ctx));
 // registration(bot);
 
 commandList(bot);
