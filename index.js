@@ -293,6 +293,8 @@ bot.on("message:text", async (ctx) => {
     const username = ctx.session.username;
     const code = ctx.session.code;
     console.log(username);
+    console.log(password);
+    console.log(code);
 
     // Автоматизируем создание пользователя через ocpasswd с помощью expect
     const command = `./create_user.sh ${username} ${password}`;
@@ -302,7 +304,7 @@ bot.on("message:text", async (ctx) => {
         console.error(`Ошибка при добавлении пользователя: ${error}`);
         ctx.reply("Ошибка при добавлении пользователя.");
       } else {
-        await UserController.addUser(code, username, password);
+        await UserController.addUser(username, password, code);
         ctx.reply(`Пользователь ${username} добавлен. Добро пожаловать в VPN!`);
 
         ctx.session = {}; // Очистка данных текущего сеанса после завершения регистрации
