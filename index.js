@@ -40,25 +40,23 @@ bot.use(
 // Проверка авторизации
 const isAuthorized = (ctx) => ctx.from.id === 405034143;
 
-// Функция для закрытия доступа к командам
-const restrictedCommand = (commandHandler) => {
-  return (ctx) => {
-    if (isAuthorized(ctx)) {
-      return commandHandler(ctx);
-    }
-    return;
-  };
+// Функция для ограничения доступа к командам
+const restrictedCommand = (bot, command, handler) => {
+  if (isAuthorized) {
+    handler(bot);
+  }
+  return;
 };
 
-// Подключение команд с ограниченным доступом
-connectedUsers(bot, restrictedCommand);
-addCode(bot, restrictedCommand);
-listCode(bot, restrictedCommand);
-deleteCode(bot, restrictedCommand);
-deleteAllCode(bot, restrictedCommand);
-deleteUser(bot, restrictedCommand);
-listUser(bot, restrictedCommand);
-showId(bot, restrictedCommand);
+// Ограниченные команды
+restrictedCommand(bot, connectedUsers);
+restrictedCommand(bot, addCode);
+restrictedCommand(bot, listCode);
+restrictedCommand(bot, deleteCode);
+restrictedCommand(bot, deleteAllCode);
+restrictedCommand(bot, deleteUser);
+restrictedCommand(bot, listUser);
+restrictedCommand(bot, showId);
 
 registration(bot);
 
