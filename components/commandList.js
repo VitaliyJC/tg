@@ -1,5 +1,16 @@
-export const commandList = (bot) => {
-  bot.api.setMyCommands([
+export const commandList = (
+  bot,
+  ADMIN_IDS,
+  BotCommandScopeChatMember,
+  BotCommandScopeDefault
+) => {
+  // Команды, доступные всем пользователям
+  const userCommands = [
+    { command: "registration", description: "Зарегистрироваться" },
+    { command: "id", description: "Показать Ваш ID" },
+  ];
+
+  const adminCommands = [
     {
       command: "connected_users",
       description: "Проверка активных пользователей",
@@ -13,6 +24,13 @@ export const commandList = (bot) => {
       command: "list_users",
       description: "Показать зарегистрированных пользователей",
     },
-    { command: "registration", description: "Зарегистрироваться" },
-  ]);
+  ];
+
+  // Устанавливаем команды для всех пользователей
+  bot.api.setMyCommands(userCommands, { scope: new BotCommandScopeDefault() });
+
+  // Устанавливаем команды только для администратора
+  bot.api.setMyCommands(adminCommands, {
+    scope: new BotCommandScopeChatMember(ADMIN_ID),
+  });
 };
