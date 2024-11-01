@@ -270,7 +270,10 @@ bot.on("message:text", async (ctx) => {
     const code = ctx.message.text.trim();
 
     // Проверяем код доступа в базе данных
-    const codeDocument = await validateCode(code, true);
+    const codeDocument = await validateCode({
+      codeString: code,
+      throwError: true,
+    });
     console.log(codeDocument);
 
     if (codeDocument) {
