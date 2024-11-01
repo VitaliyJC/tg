@@ -28,6 +28,6 @@ export const commandList = (bot, adminId) => {
 
   // Устанавливаем команды для администратора только в приватных чатах
   bot.api.setMyCommands(adminCommands, {
-    scope: { type: "all_private_chats" },
+    scope: { type: "chat_administrators" },
   });
 };
