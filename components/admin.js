@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import { UserController, CodeController } from "../controllers/index.js";
 
 // Команда для проверки подключенных клиентов
-export const connectedUsers = async (bot) => {
+export const connectedUsers = async (ctx) => {
   const args = ctx.message.text.split(" ").slice(1);
   const username = args[0];
 
