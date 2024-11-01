@@ -37,14 +37,21 @@ bot.use(
   })
 );
 
-connectedUsers(bot);
-addCode(bot);
-listCode(bot);
-deleteCode(bot);
-deleteAllCode(bot);
-deleteUser(bot);
-listUser(bot);
-showId(bot);
+// Проверка авторизации
+const isAuthorized = (ctx) => ctx.from.id === 405034143;
+
+const restrictedCommand = (bot, commandHandler) => {
+  return bot.filter((ctx) => isAuthorized(ctx)).use(commandHandler);
+};
+
+restrictedCommand(bot, connectedUsers);
+restrictedCommand(bot, addCode);
+restrictedCommand(bot, listCode);
+restrictedCommand(bot, deleteCode);
+restrictedCommand(bot, deleteAllCode);
+restrictedCommand(bot, deleteUser);
+restrictedCommand(bot, listUser);
+restrictedCommand(bot, showId);
 
 registration(bot);
 
