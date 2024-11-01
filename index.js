@@ -31,7 +31,7 @@ const bot = new Bot(config.telegram_api);
 
 bot.use(
   limit({
-    timeFrame: 10000, // Время в миллисекундах (например, 10 секунд)
+    timeFrame: 2000, // Время в миллисекундах
     limit: 3, // Количество запросов, разрешенных в указанный период
     onLimitExceeded: async (ctx) => {
       await ctx.reply(
