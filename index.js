@@ -240,9 +240,28 @@ bot.command("delete_user", async (ctx) => {
 });
 
 // Просмотр всех зарегестрированных пользователей
+bot.command("list_users", async (ctx) => {
+  try {
+    const users = await UserController.getAllUsers();
+
+    if (users.length === 0) {
+      ctx.reply("Нет зарегистрированных пользователей.");
+    } else {
+      const userList = users
+        .map((user) => `Имя пользователя: ${user.username} - ${user.status} 🟢`)
+        .join("\n");
+      ctx.reply(`Зарегистрированные пользователи:\n\n${userList}`);
+    }
+  } catch (error) {
+    console.error("Ошибка при получении списка пользователей:", error);
+    ctx.reply("Не удалось получить список пользователей.");
+  }
+});
+
+// Просмотр всех зарегестрированных пользователей
 bot.command("validate", async (ctx) => {
   try {
-    await UserController.getAllUsers(test);
+    await UserController.validateCode("test");
   } catch (error) {
     console.error("Ошибка при получении списка пользователей:", error);
     ctx.reply("Не удалось получить список пользователей.");
