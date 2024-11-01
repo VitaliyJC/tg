@@ -242,7 +242,7 @@ bot.command("delete_user", async (ctx) => {
 // Просмотр всех зарегестрированных пользователей
 bot.command("validate", async (ctx) => {
   try {
-    await UserController.getAllUsers();
+    await UserController.getAllUsers(test);
   } catch (error) {
     console.error("Ошибка при получении списка пользователей:", error);
     ctx.reply("Не удалось получить список пользователей.");
