@@ -37,24 +37,30 @@ bot.use(
   })
 );
 
+// ID администратора
+const ADMIN_ID = 405034143;
+
 // Middleware для проверки авторизации
 const adminMiddleware = async (ctx, next) => {
-  const adminId = 405034143;
-  if (ctx.from?.id === adminId) {
+  if (ctx.from?.id === ADMIN_ID) {
     await next(); // если пользователь админ, продолжаем выполнение команды
   }
-  // Неавторизованные пользователи не получат ответ
 };
 
-// Ограниченные команды с middleware для проверки админа
-bot.command("connected_users", adminMiddleware, connectedUsers);
-bot.command("add_code", adminMiddleware, addCode);
-bot.command("list_code", adminMiddleware, listCode);
-bot.command("delete_code", adminMiddleware, deleteCode);
-bot.command("delete_all_codes", adminMiddleware, deleteAllCode);
-bot.command("delete_user", adminMiddleware, deleteUser);
-bot.command("list_user", adminMiddleware, listUser);
-bot.command("show_id", adminMiddleware, showId);
+// Функция-обёртка для добавления команд с проверкой админа
+const restrictedCommand = (commandName, handler) => {
+  bot.command(commandName, adminMiddleware, handler);
+};
+
+// Подключаем ограниченные команды
+restrictedCommand("connected_users", connectedUsers);
+restrictedCommand("add_code", addCode);
+restrictedCommand("list_code", listCode);
+restrictedCommand("delete_code", deleteCode);
+restrictedCommand("delete_all_codes", deleteAllCode);
+restrictedCommand("delete_user", deleteUser);
+restrictedCommand("list_user", listUser);
+restrictedCommand("show_id", showId);
 
 // registration(bot);
 
