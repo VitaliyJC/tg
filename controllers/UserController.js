@@ -20,7 +20,7 @@ export const addUser = async (username, password, accessCode) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const accessCodeObjectId = mongoose.Types.ObjectId(accessCode);
+    const accessCodeObjectId = new mongoose.Types.ObjectId(accessCode);
 
     await UserModel.create({
       username,
