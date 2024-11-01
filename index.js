@@ -47,21 +47,20 @@ const adminMiddleware = async (ctx, next) => {
   }
 };
 
-// Функция-обёртка для добавления команд с проверкой админа
+// Функция для подключения ограниченной команды
 const restrictedCommand = (commandName, handler) => {
   bot.command(commandName, adminMiddleware, handler);
 };
 
 // Подключаем ограниченные команды
-restrictedCommand("connected_users", connectedUsers(bot));
-restrictedCommand("add_code", addCode(bot));
-restrictedCommand("list_code", listCode(bot));
-restrictedCommand("delete_code", deleteCode(bot));
-restrictedCommand("delete_all_codes", deleteAllCode(bot));
-restrictedCommand("delete_user", deleteUser(bot));
-restrictedCommand("list_user", listUser(bot));
-restrictedCommand("show_id", showId(bot));
-// showId(bot);
+restrictedCommand("connected_users", (ctx) => connectedUsers(bot, ctx));
+restrictedCommand("add_code", (ctx) => addCode(bot, ctx));
+restrictedCommand("list_code", (ctx) => listCode(bot, ctx));
+restrictedCommand("delete_code", (ctx) => deleteCode(bot, ctx));
+restrictedCommand("delete_all_codes", (ctx) => deleteAllCode(bot, ctx));
+restrictedCommand("delete_user", (ctx) => deleteUser(bot, ctx));
+restrictedCommand("list_user", (ctx) => listUser(bot, ctx));
+restrictedCommand("show_id", (ctx) => showId(bot, ctx));
 
 // registration(bot);
 

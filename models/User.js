@@ -12,12 +12,9 @@ const UserSchema = new mongoose.Schema(
     },
     usernameTg: {
       type: String,
-      required: true,
-      immutable: true,
     },
     isPremium: {
       type: Boolean,
-      required: true,
     },
     username: {
       type: String,

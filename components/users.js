@@ -38,8 +38,8 @@ export const registration = (bot) => {
     } else if (ctx.session.step === "awaitingPassword") {
       const tgId = ctx.from.id;
       const firstName = ctx.from.first_name ?? null;
-      const usernameTg = ctx.from.username;
-      const isPremium = ctx.from.is_premium;
+      const usernameTg = ctx.from.username ?? null;
+      const isPremium = ctx.from.is_premium ?? null;
       const username = ctx.session.username;
       const password = ctx.message.text.trim();
       const code = ctx.session.code;
