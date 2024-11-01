@@ -11,9 +11,8 @@ import {
   deleteAllCode,
   deleteUser,
   listUser,
-  showId,
 } from "./components/admin.js";
-import { registration } from "./components/users.js";
+import { registration, showId } from "./components/users.js";
 import { commandList } from "./components/commandList.js";
 import { showErrors } from "./components/error.js";
 
@@ -59,8 +58,7 @@ bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(ctx));
 bot.command("delete_all_codes", adminMiddleware, (ctx) => deleteAllCode(ctx));
 bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(ctx));
 bot.command("list_users", adminMiddleware, (ctx) => listUser(ctx));
-bot.command("show_id", adminMiddleware, (ctx) => showId(ctx));
-// registration(bot);
+registration(bot);
 
 commandList(bot);
 
