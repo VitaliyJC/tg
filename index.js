@@ -61,17 +61,17 @@ const adminMiddleware = async (ctx, next) => {
   }
 };
 
-// Создаем клавиатуру
-const keyboard = new Keyboard()
-  .text("Старт")
-  .row()
-  .text("Список команд")
-  .resized();
-
 // Отправляем клавиатуру при команде `/start`
 bot.command("start", (ctx) =>
   ctx.reply("Бот активен и получает команды", { reply_markup: keyboard })
 );
+
+// Создаем клавиатуру
+const keyboard = new Keyboard()
+  .text("Список команд")
+  .row()
+  .text("Зарегистрироваться")
+  .resized();
 
 // Обрабатываем нажатие на кнопку "Старт"
 bot.hears("Список команд", (ctx) => {
