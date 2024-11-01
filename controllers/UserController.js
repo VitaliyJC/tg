@@ -15,19 +15,25 @@ export const isUsernameUnique = async (username) => {
 
 export const addUser = async (username, password, accessCode) => {
   try {
-    await CodeModel.validateCode(accessCode, true);
+    const codeDocument = await CodeModel.validateCode({
+      codeString: accessCode,
+      throwError: true,
+    });
+
+    if (!codeDocument) {
+      console.log("Код доступа недействителен.");
+      return;
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
-
-    const accessCodeObjectId = new mongoose.Types.ObjectId(accessCode);
 
     await UserModel.create({
       username,
       passwordHash: hash,
       status: "active",
       paidUntil: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
-      code: accessCodeObjectId,
+      code: codeDocument.code,
     });
 
     await CodeModel.findOneAndUpdate(
