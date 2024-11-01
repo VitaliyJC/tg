@@ -40,23 +40,14 @@ bot.use(
 // Проверка авторизации
 const isAuthorized = (ctx) => ctx.from.id === 405034143;
 
-const restrictedCommand = (commandName, handler) => {
-  bot.command(commandName, async (ctx) => {
-    if (!isAuthorized(ctx)) {
-      return; // Прекращаем выполнение, если пользователь не авторизован
-    }
-    await handler(bot);
-  });
-};
-
-restrictedCommand("connected_users", connectedUsers);
-restrictedCommand("add_code", addCode);
-restrictedCommand("list_code", listCode);
-restrictedCommand("delete_code", deleteCode);
-restrictedCommand("delete_all_code", deleteAllCode);
-restrictedCommand("delete_user", deleteUser);
-restrictedCommand("list_user", listUser);
-restrictedCommand("show_id", showId);
+connectedUsers(bot);
+addCode(bot);
+listCode(bot);
+deleteCode(bot);
+deleteAllCode(bot);
+deleteUser(bot);
+listUser(bot);
+showId(bot);
 
 registration(bot);
 
