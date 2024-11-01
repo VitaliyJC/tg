@@ -271,6 +271,7 @@ bot.on("message:text", async (ctx) => {
 
     // Проверяем код доступа в базе данных
     const user = await validateCode(code, true);
+    console.log(user);
 
     if (user) {
       const expiryDate = new Date(user.expiryDate);
@@ -310,7 +311,7 @@ bot.on("message:text", async (ctx) => {
         ctx.reply("Ошибка при добавлении пользователя.");
       } else {
         await UserController.addUser(code, username, password);
-        ctx.reply("Пользователь добавлен. Добро пожаловать в VPN!");
+        ctx.reply(`Пользователь ${username} добавлен. Добро пожаловать в VPN!`);
 
         ctx.session = {}; // Очистка данных текущего сеанса после завершения регистрации
       }
