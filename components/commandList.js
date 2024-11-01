@@ -26,8 +26,8 @@ export const commandList = (bot, adminId) => {
   // Устанавливаем команды для всех пользователей
   bot.api.setMyCommands(userCommands, { scope: { type: "default" } });
 
-  // Устанавливаем команды только для администратора
+  // Устанавливаем команды для администратора только в приватных чатах
   bot.api.setMyCommands(adminCommands, {
-    scope: { type: "chat_member", chat_id: adminId, user_id: adminId },
+    scope: { type: "all_private_chats" },
   });
 };
