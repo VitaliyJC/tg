@@ -1,4 +1,4 @@
-import CodeModel from "../models/index.js";
+import CodeModel from "../models/Code.js";
 
 export const addCode = async (code, expiryDate) => {
   try {
