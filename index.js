@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 
 import { config } from "./config.js";
 import { UserController, CodeController } from "./controllers/index.js";
-import Code from "./models/Code.js";
 
 mongoose
   .connect(config.db_api, { authSource: "admin" })
@@ -258,16 +257,6 @@ bot.command("list_users", async (ctx) => {
   }
 });
 
-// Просмотр всех зарегестрированных пользователей
-bot.command("validate", async (ctx) => {
-  try {
-    await UserController.validateCode("test");
-  } catch (error) {
-    console.error("Ошибка при получении списка пользователей:", error);
-    ctx.reply("Не удалось получить список пользователей.");
-  }
-});
-
 // Приветственное сообщение
 bot.command("registration", (ctx) => {
   ctx.session.step = "awaitingCode"; // Устанавливаем начальный этап
@@ -278,25 +267,14 @@ bot.command("registration", (ctx) => {
 bot.on("message:text", async (ctx) => {
   if (ctx.session.step === "awaitingCode") {
     const code = ctx.message.text.trim();
-
-    // Проверяем код доступа в базе данных
-    const codeDocument = await Code.validateCode({
-      codeString: code,
-      throwError: true,
-    });
-    console.log(codeDocument);
+    const codeDocument = await CodeController.validateCode(code, true);
 
     if (codeDocument) {
-      const expiryDate = new Date(codeDocument.expiryDate);
-      if (expiryDate > new Date()) {
-        ctx.session.code = code; // Сохраняем код в данных текущего сеанса
-        ctx.session.step = "awaitingUsername"; // Переход к следующему этапу
-        ctx.reply("Код доступа подтвержден. Введите желаемый логин.");
-      } else {
-        ctx.reply("Срок действия кода истек!");
-      }
+      ctx.session.code = codeDocument.code;
+      ctx.session.step = "awaitingUsername";
+      ctx.reply("Код доступа подтвержден. Введите желаемый логин.");
     } else {
-      ctx.reply("Неверный код доступа.");
+      ctx.reply("Неверный или недействительный код доступа.");
     }
   } else if (ctx.session.step === "awaitingUsername") {
     const username = ctx.message.text.trim();
