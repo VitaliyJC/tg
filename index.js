@@ -37,7 +37,7 @@ bot.use(
 );
 
 // ID администратора
-const ADMIN_IDS = [405034143, 123456789];
+const ADMIN_IDS = [405034143];
 
 // Middleware для проверки админ-доступа
 const adminMiddleware = async (ctx, next) => {
@@ -58,6 +58,7 @@ bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(ctx));
 bot.command("delete_all_codes", adminMiddleware, (ctx) => deleteAllCode(ctx));
 bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(ctx));
 bot.command("list_users", adminMiddleware, (ctx) => listUser(ctx));
+
 registration(bot);
 
 commandList(bot);
