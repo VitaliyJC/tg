@@ -61,6 +61,7 @@ restrictedCommand("delete_all_codes", deleteAllCode);
 restrictedCommand("delete_user", deleteUser);
 restrictedCommand("list_user", listUser);
 restrictedCommand("show_id", showId);
+showId(bot);
 
 // registration(bot);
 
