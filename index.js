@@ -82,7 +82,7 @@ bot.hears("Список команд", (ctx) => {
 
 // Обрабатываем нажатие на кнопку "Зарегистрироваться"
 bot.hears("Зарегистрироваться", async (ctx) => {
-  registration(bot);
+  bot.commands.registration(ctx);
 });
 
 bot.command("connected_users", adminMiddleware, (ctx) => connectedUsers(ctx));
