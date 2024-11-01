@@ -37,28 +37,24 @@ bot.use(
   })
 );
 
-// Проверка авторизации
-const isAuthorized = (ctx) => ctx.from.id === 405034143;
-
-// Функция для ограничения доступа к командам
-const restrictedCommand = (bot, commandName, handler) => {
-  bot.command(commandName, (ctx) => {
-    if (isAuthorized(ctx)) {
-      return handler(ctx);
-    }
-    // Неавторизованным пользователям не отвечаем
-  });
+// Middleware для проверки авторизации
+const adminMiddleware = async (ctx, next) => {
+  const adminId = 405034143;
+  if (ctx.from?.id === adminId) {
+    await next(); // если пользователь админ, продолжаем выполнение команды
+  }
+  // Неавторизованные пользователи не получат ответ
 };
 
-// Ограниченные команды
-restrictedCommand(bot, "connected_users", connectedUsers);
-restrictedCommand(bot, "add_code", addCode);
-restrictedCommand(bot, "list_code", listCode);
-restrictedCommand(bot, "delete_code", deleteCode);
-restrictedCommand(bot, "delete_all_codes", deleteAllCode);
-restrictedCommand(bot, "delete_user", deleteUser);
-restrictedCommand(bot, "list_user", listUser);
-restrictedCommand(bot, "show_id", showId);
+// Ограниченные команды с middleware для проверки админа
+bot.command("connected_users", adminMiddleware, connectedUsers);
+bot.command("add_code", adminMiddleware, addCode);
+bot.command("list_code", adminMiddleware, listCode);
+bot.command("delete_code", adminMiddleware, deleteCode);
+bot.command("delete_all_codes", adminMiddleware, deleteAllCode);
+bot.command("delete_user", adminMiddleware, deleteUser);
+bot.command("list_user", adminMiddleware, listUser);
+bot.command("show_id", adminMiddleware, showId);
 
 registration(bot);
 
