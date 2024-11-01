@@ -45,7 +45,7 @@ const restrictedCommand = (commandName, handler) => {
     if (!isAuthorized(ctx)) {
       return; // Прекращаем выполнение, если пользователь не авторизован
     }
-    await handler(ctx);
+    await handler(bot);
   });
 };
 
