@@ -1,4 +1,4 @@
-import { Bot, session, GrammyError, HttpError } from "grammy";
+import { Bot, session, GrammyError, HttpError, Keyboard } from "grammy";
 import { freeStorage } from "@grammyjs/storage-free";
 import mongoose from "mongoose";
 
@@ -49,7 +49,25 @@ const adminMiddleware = async (ctx, next) => {
   }
 };
 
+const keyboard = new Keyboard()
+  .text("Старт")
+  .row()
+  .text("Список команд")
+  .resized();
+
 bot.command("start", (ctx) => ctx.reply("Бот активен и получает команды"));
+
+// Обрабатываем нажатие на кнопку "Старт"
+bot.hears("Старт", (ctx) => {
+  ctx.reply("Вы нажали кнопку Старт.");
+});
+
+// Обрабатываем нажатие на кнопку "Список команд"
+bot.hears("Список команд", (ctx) => {
+  ctx.reply(
+    "Доступные команды:\n/connected_users\n/add_code\n/list_codes\n..."
+  );
+});
 
 bot.command("connected_users", adminMiddleware, (ctx) => connectedUsers(ctx));
 bot.command("add_code", adminMiddleware, (ctx) => addCode(ctx));
