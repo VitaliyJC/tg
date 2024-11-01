@@ -9,7 +9,7 @@ import { UserController, CodeController } from "./controllers/index.js";
 mongoose
   .connect(config.db_api, { authSource: "admin" })
   .then(() => {
-    console.log("Connected to MongoDB with authentication");
+    console.log("Connected to MongoDB with authentication ✅");
   })
   .catch((error) => {
     console.log("Error connecting to MongoDB:", error);
@@ -163,9 +163,9 @@ bot.command("list_codes", async (ctx) => {
     const codeList = codes
       .map((code) => {
         const status = checkStatus(code.status);
-        return `Код: ${code.code}, Срок действия до: ${new Date(
+        return `Код: ${code.code}, действителен до: ${new Date(
           code.expiryDate
-        ).toLocaleDateString("ru-RU")}, Статус: ${status}`;
+        ).toLocaleDateString("ru-RU")}, статус: ${status}`;
       })
       .join("\n");
 
