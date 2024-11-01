@@ -309,7 +309,7 @@ bot.on("message:text", async (ctx) => {
         console.error(`Ошибка при добавлении пользователя: ${error}`);
         ctx.reply("Ошибка при добавлении пользователя.");
       } else {
-        await addUser(code, username, password);
+        await UserController.addUser(code, username, password);
         ctx.reply("Пользователь добавлен. Добро пожаловать в VPN!");
 
         ctx.session = {}; // Очистка данных текущего сеанса после завершения регистрации
