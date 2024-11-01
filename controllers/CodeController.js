@@ -1,11 +1,11 @@
 import CodeModel from "../models/Code.js";
 
-export const addCode = async (code, valid_until) => {
+export const addCode = async (code, expiryDate) => {
   try {
     await CodeModel.create({
       code,
       status: "pending",
-      valid_until,
+      expiryDate,
     });
   } catch (error) {
     console.log(error);

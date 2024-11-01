@@ -12,7 +12,7 @@ const CodeSchema = new mongoose.Schema(
       enum: ["activated", "pending"],
       required: true,
     },
-    valid_until: {
+    expiryDate: {
       type: Date,
       required: true,
     },
@@ -42,7 +42,7 @@ CodeSchema.statics.validateCode = async function (
   }
 
   // Проверяем, не истек ли срок действия кода
-  if (new Date() > code.valid_until) {
+  if (new Date() > code.expiryDate) {
     if (throwError) throw new Error("Срок действия кода истек.");
     return false;
   }

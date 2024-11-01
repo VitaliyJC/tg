@@ -102,65 +102,64 @@ bot.command("connected_users", async (ctx) => {
   }
 });
 
-// // Команда для добавления кода доступа
-// bot.command("addcode", async (ctx) => {
-//   const args = ctx.message.text.split(" ").slice(1);
+// Команда для добавления кода доступа
+bot.command("addcode", async (ctx) => {
+  const args = ctx.message.text.split(" ").slice(1);
 
-//   if (args.length < 2) {
-//     return ctx.reply(
-//       "Пожалуйста, укажите код доступа и срок действия в днях.\nПример: /addcode mycode 7"
-//     );
-//   }
+  if (args.length < 2) {
+    return ctx.reply(
+      "Пожалуйста, укажите код доступа и срок действия в днях.\nПример: /addcode mycode 7"
+    );
+  }
 
-//   const code = args[0];
-//   const days = parseInt(args[1]);
+  const code = args[0];
+  const days = parseInt(args[1]);
 
-//   if (isNaN(days)) {
-//     return ctx.reply(
-//       "Срок действия должен быть числом, указывающим количество дней."
-//     );
-//   }
+  if (isNaN(days)) {
+    return ctx.reply(
+      "Срок действия должен быть числом, указывающим количество дней."
+    );
+  }
 
-//   const expiryDate = new Date();
-//   expiryDate.setDate(expiryDate.getDate() + days);
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + days);
 
-//   try {
-//     await addUserCode(code, expiryDate);
-//     ctx.reply(
-//       `Добавлен код доступа: ${code}, срок действия: ${days} дней (до ${expiryDate.toDateString()})`
-//     );
-//   } catch (error) {
-//     console.error("Ошибка при добавлении кода доступа:", error);
-//     ctx.reply("Ошибка при добавлении кода доступа. Попробуйте снова.");
-//   }
-// });
+  try {
+    await CodeController.addCode(code, expiryDate);
+    ctx.reply(
+      `Добавлен код доступа: ${code}, срок действия: ${days} дней (до ${expiryDate.toDateString()})`
+    );
+  } catch (error) {
+    console.error("Ошибка при добавлении кода доступа:", error);
+    ctx.reply("Ошибка при добавлении кода доступа. Попробуйте снова.");
+  }
+});
 
-// // Команда для просмотра всех кодов доступа
-// bot.command("listcodes", async (ctx) => {
-//   try {
-//     const codes = await getAllCodes();
-//     console.log(codes);
+// Команда для просмотра всех кодов доступа
+bot.command("listcodes", async (ctx) => {
+  try {
+    const codes = await CodeController.getAllCodes();
 
-//     if (codes.length === 0) {
-//       return ctx.reply("Нет доступных кодов.");
-//     }
+    if (codes.length === 0) {
+      return ctx.reply("Нет доступных кодов.");
+    }
 
-//     const codeList = codes
-//       .map((code) => {
-//         const status =
-//           new Date(code.expiryDate) > new Date() ? "Активен" : "Истек";
-//         return `Код: ${code.code}, Срок действия до: ${new Date(
-//           code.expiryDate
-//         ).toLocaleDateString()}, Статус: ${status}`;
-//       })
-//       .join("\n");
+    const codeList = codes
+      .map((code) => {
+        const status =
+          new Date(code.expiryDate) > new Date() ? "Активен" : "Истек";
+        return `Код: ${code.code}, Срок действия до: ${new Date(
+          code.expiryDate
+        ).toLocaleDateString()}, Статус: ${status}`;
+      })
+      .join("\n");
 
-//     ctx.reply(`Список кодов доступа:\n${codeList}`);
-//   } catch (error) {
-//     console.error("Ошибка при получении кодов доступа:", error);
-//     ctx.reply("Ошибка при получении списка кодов доступа.");
-//   }
-// });
+    ctx.reply(`Список кодов доступа:\n${codeList}`);
+  } catch (error) {
+    console.error("Ошибка при получении кодов доступа:", error);
+    ctx.reply("Ошибка при получении списка кодов доступа.");
+  }
+});
 
 // // Команда для удаления определенного кода
 // bot.command("deletecode", async (ctx) => {
