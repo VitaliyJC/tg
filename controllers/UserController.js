@@ -33,7 +33,7 @@ export const addUser = async (username, password, accessCode) => {
       passwordHash: hash,
       status: "active",
       paidUntil: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // доступ на 24 часа
-      code: codeDocument.code,
+      code: accessCode,
     });
 
     await CodeModel.findOneAndUpdate(
