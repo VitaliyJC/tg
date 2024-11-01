@@ -5,6 +5,7 @@ export const commandList = (bot, adminId) => {
     { command: "id", description: "Показать Ваш ID" },
   ];
 
+  // Команды, доступные только админу в приватных чатах
   const adminCommands = [
     { command: "add_code", description: "Добавить код доступа" },
     { command: "list_codes", description: "Показать все коды доступа" },
@@ -17,17 +18,17 @@ export const commandList = (bot, adminId) => {
       command: "list_users",
       description: "Показать зарегистрированных пользователей",
     },
-    { command: "id", description: "Показать Ваш ID" },
     { command: "delete_user", description: "Удалить пользователя" },
     { command: "delete_all_codes", description: "Удалить все коды доступа" },
-    { command: "registration", description: "Зарегистрироваться" },
   ];
 
   // Устанавливаем команды для всех пользователей
-  bot.api.setMyCommands(userCommands, { scope: { type: "default" } });
+  bot.api.setMyCommands(userCommands, {
+    scope: { type: "default" },
+  });
 
-  // Устанавливаем команды для администратора только в приватных чатах
+  // Устанавливаем команды для администратора в приватных чатах
   bot.api.setMyCommands(adminCommands, {
-    scope: { type: "all_private_chats" },
+    scope: { type: "chat", chat_id: adminId },
   });
 };
