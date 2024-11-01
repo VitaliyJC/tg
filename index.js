@@ -43,24 +43,26 @@ const ADMIN_ID = 405034143;
 // Middleware для проверки авторизации
 const adminMiddleware = async (ctx, next) => {
   if (ctx.from?.id === ADMIN_ID) {
+    console.log("✅ Администратор"); // Для отладки
     await next(); // если пользователь админ, продолжаем выполнение команды
+  } else {
+    console.log("⛔ Не авторизован"); // Для отладки
   }
 };
 
-// Функция для подключения ограниченной команды
-const restrictedCommand = (commandName, handler) => {
-  bot.command(commandName, adminMiddleware, handler);
-};
-
-// Подключаем ограниченные команды
-restrictedCommand("connected_users", (ctx) => connectedUsers(bot, ctx));
-restrictedCommand("add_code", (ctx) => addCode(bot, ctx));
-restrictedCommand("list_code", (ctx) => listCode(bot, ctx));
-restrictedCommand("delete_code", (ctx) => deleteCode(bot, ctx));
-restrictedCommand("delete_all_codes", (ctx) => deleteAllCode(bot, ctx));
-restrictedCommand("delete_user", (ctx) => deleteUser(bot, ctx));
-restrictedCommand("list_user", (ctx) => listUser(bot, ctx));
-restrictedCommand("show_id", (ctx) => showId(bot, ctx));
+// Подключение команд с проверкой администратора
+bot.command("connected_users", adminMiddleware, (ctx) =>
+  connectedUsers(bot, ctx)
+);
+bot.command("add_code", adminMiddleware, (ctx) => addCode(bot, ctx));
+bot.command("list_code", adminMiddleware, (ctx) => listCode(bot, ctx));
+bot.command("delete_code", adminMiddleware, (ctx) => deleteCode(bot, ctx));
+bot.command("delete_all_codes", adminMiddleware, (ctx) =>
+  deleteAllCode(bot, ctx)
+);
+bot.command("delete_user", adminMiddleware, (ctx) => deleteUser(bot, ctx));
+bot.command("list_user", adminMiddleware, (ctx) => listUser(bot, ctx));
+bot.command("show_id", adminMiddleware, (ctx) => showId(bot, ctx));
 
 // registration(bot);
 
