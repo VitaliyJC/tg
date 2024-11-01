@@ -73,16 +73,16 @@ const keyboard = new Keyboard()
   .text("Зарегистрироваться")
   .resized();
 
-// Обрабатываем нажатие на кнопку "Старт"
+// Обрабатываем нажатие на кнопку "Список команд"
 bot.hears("Список команд", (ctx) => {
   ctx.reply(
     "Доступные команды:\n/registration - зарегистрироваться\n/id - показать Ваш ID"
   );
 });
 
-// Обрабатываем нажатие на кнопку "Список команд"
-bot.hears("Зарегистрироваться", (ctx) => {
-  ctx.reply("/registration");
+// Обрабатываем нажатие на кнопку "Зарегистрироваться"
+bot.hears("Зарегистрироваться", async (ctx) => {
+  ctx.message.text = "/registration"; // Подменяем текст сообщения
 });
 
 bot.command("connected_users", adminMiddleware, (ctx) => connectedUsers(ctx));
