@@ -147,16 +147,16 @@ bot.command("list_codes", async (ctx) => {
     const checkStatus = (status) => {
       switch (status) {
         case "activated":
-          return "Активирован";
+          return "Активирован 🔴";
 
         case "pending":
-          return "Активен";
+          return "Активен 🟢";
 
         case "expired":
-          return "Истек";
+          return "Истек 🔴";
 
         default:
-          return "Неизвестен";
+          return "Неизвестен ❌";
       }
     };
 
