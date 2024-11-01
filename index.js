@@ -44,14 +44,14 @@ const restrictedCommand = (bot, commandHandler) => {
   return bot.filter((ctx) => isAuthorized(ctx)).use(commandHandler);
 };
 
-restrictedCommand(bot, connectedUsers);
-restrictedCommand(bot, addCode);
-restrictedCommand(bot, listCode);
-restrictedCommand(bot, deleteCode);
-restrictedCommand(bot, deleteAllCode);
-restrictedCommand(bot, deleteUser);
-restrictedCommand(bot, listUser);
-restrictedCommand(bot, showId);
+restrictedCommand(connectedUsers(bot));
+restrictedCommand(addCode(bot));
+restrictedCommand(listCode(bot));
+restrictedCommand(deleteCode(bot));
+restrictedCommand(deleteAllCode(bot));
+restrictedCommand(deleteUser(bot));
+restrictedCommand(listUser(bot));
+restrictedCommand(showId(bot));
 
 registration(bot);
 
