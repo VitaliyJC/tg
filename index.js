@@ -56,7 +56,7 @@ bot.command("delete_user", adminMiddleware, deleteUser);
 bot.command("list_user", adminMiddleware, listUser);
 bot.command("show_id", adminMiddleware, showId);
 
-registration(bot);
+// registration(bot);
 
 commandList(bot);
 
