@@ -283,7 +283,7 @@ bot.on("message:text", async (ctx) => {
         ctx.session.step = "awaitingUsername"; // Переход к следующему этапу
         ctx.reply("Код доступа подтвержден. Введите желаемый логин.");
       } else {
-        ctx.reply("Срок действия кода истек.");
+        ctx.reply("Срок действия кода истек!");
       }
     } else {
       ctx.reply("Неверный код доступа.");
