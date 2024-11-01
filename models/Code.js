@@ -22,10 +22,10 @@ const CodeSchema = new mongoose.Schema(
   }
 );
 
-CodeSchema.statics.validateCode = async function (
+CodeSchema.statics.validateCode = async function ({
   codeString,
-  throwError = false
-) {
+  throwError = false,
+}) {
   // Находим код по значению
   const code = await this.findOne({ code: codeString });
 
