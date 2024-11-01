@@ -88,7 +88,6 @@ export const validateCode = async (codeString, throwError = false) => {
     return true;
   } catch (error) {
     console.log("Ошибка при проверке кода:", error);
-    if (throwError) throw error;
     return false;
   }
 };

@@ -2,33 +2,35 @@ import { exec } from "child_process";
 import { UserController, CodeController } from "../controllers/index.js";
 
 export const registration = (bot) => {
-  // Приветственное сообщение
   bot.command("registration", (ctx) => {
-    ctx.session.step = "awaitingCode"; // Устанавливаем начальный этап
+    ctx.session.step = "awaitingCode";
     ctx.reply("Привет! Введите код доступа для регистрации.");
   });
 
-  // Обработка кода доступа, логина и пароля
   bot.on("message:text", async (ctx) => {
     if (ctx.session.step === "awaitingCode") {
       const code = ctx.message.text.trim();
-      const codeDocument = await CodeController.validateCode(code, true);
+      try {
+        const codeIsValid = await CodeController.validateCode(code, true);
 
-      if (codeDocument) {
-        ctx.session.code = code;
-        ctx.session.step = "awaitingUsername";
-        ctx.reply("✅ Код доступа подтвержден. Введите желаемый логин.");
-      } else {
-        ctx.reply("❗Неверный или недействительный код доступа.");
+        if (codeIsValid) {
+          ctx.session.code = code;
+          ctx.session.step = "awaitingUsername";
+          ctx.reply("✅ Код доступа подтвержден. Введите желаемый логин.");
+        } else {
+          ctx.reply("❗Неверный или недействительный код доступа.");
+        }
+      } catch (error) {
+        console.error("Ошибка при проверке кода:", error);
+        ctx.reply("❗Произошла ошибка при проверке кода.");
       }
     } else if (ctx.session.step === "awaitingUsername") {
+      // Остальная часть логики остаётся прежней
       const username = ctx.message.text.trim();
-
-      // Проверяем уникальность логина
       const isUnique = await UserController.isUsernameUnique(username);
       if (isUnique) {
         ctx.session.username = username;
-        ctx.session.step = "awaitingPassword"; // Переход к этапу ввода пароля
+        ctx.session.step = "awaitingPassword";
         ctx.reply("✅ Логин уникален. Введите пароль.");
       } else {
         ctx.reply(
@@ -36,6 +38,7 @@ export const registration = (bot) => {
         );
       }
     } else if (ctx.session.step === "awaitingPassword") {
+      // Остальная часть логики для обработки пароля и завершения регистрации
       const tgId = ctx.from.id;
       const firstName = ctx.from.first_name ?? null;
       const usernameTg = ctx.from.username ?? null;
@@ -43,11 +46,6 @@ export const registration = (bot) => {
       const username = ctx.session.username;
       const password = ctx.message.text.trim();
       const code = ctx.session.code;
-      console.log(username);
-      console.log(password);
-      console.log(code);
-
-      // Автоматизируем создание пользователя через ocpasswd с помощью expect
       const command = `./create_user.sh ${username} ${password}`;
 
       exec(command, async (error) => {
@@ -68,7 +66,7 @@ export const registration = (bot) => {
             `✅ Пользователь ${username} добавлен. Добро пожаловать в VPN!`
           );
 
-          ctx.session = {}; // Очистка данных текущего сеанса после завершения регистрации
+          ctx.session = {};
         }
       });
     } else {
