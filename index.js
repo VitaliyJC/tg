@@ -144,13 +144,28 @@ bot.command("list_codes", async (ctx) => {
       return ctx.reply("Нет доступных кодов.");
     }
 
+    const checkStatus = (status) => {
+      switch (status) {
+        case "activated":
+          return "Активирован";
+
+        case "pending":
+          return "Активен";
+
+        case "expired":
+          return "Истек";
+
+        default:
+          return "Неизвестен";
+      }
+    };
+
     const codeList = codes
       .map((code) => {
-        const status =
-          new Date(code.expiryDate) > new Date() ? "Активен" : "Истек";
+        const status = checkStatus(code.status);
         return `Код: ${code.code}, Срок действия до: ${new Date(
           code.expiryDate
-        ).toLocaleDateString()}, Статус: ${status}`;
+        ).toLocaleDateString("ru-RU")}, Статус: ${status}`;
       })
       .join("\n");
 
