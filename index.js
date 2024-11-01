@@ -53,15 +53,15 @@ const restrictedCommand = (commandName, handler) => {
 };
 
 // Подключаем ограниченные команды
-restrictedCommand("connected_users", connectedUsers);
-restrictedCommand("add_code", addCode);
-restrictedCommand("list_code", listCode);
-restrictedCommand("delete_code", deleteCode);
-restrictedCommand("delete_all_codes", deleteAllCode);
-restrictedCommand("delete_user", deleteUser);
-restrictedCommand("list_user", listUser);
-restrictedCommand("show_id", showId);
-showId(bot);
+restrictedCommand("connected_users", connectedUsers(bot));
+restrictedCommand("add_code", addCode(bot));
+restrictedCommand("list_code", listCode(bot));
+restrictedCommand("delete_code", deleteCode(bot));
+restrictedCommand("delete_all_codes", deleteAllCode(bot));
+restrictedCommand("delete_user", deleteUser(bot));
+restrictedCommand("list_user", listUser(bot));
+restrictedCommand("show_id", showId(bot));
+// showId(bot);
 
 // registration(bot);
 
