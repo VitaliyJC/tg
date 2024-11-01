@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import CodeModel from "../models/Code.js";
